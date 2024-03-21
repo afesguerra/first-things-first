@@ -4,10 +4,10 @@ import {
     Header,
     Input,
     SpaceBetween,
-    Table,
     TableProps,
 } from "@cloudscape-design/components";
 import { useState } from "react";
+import EnhancedTable from "./components/EnhancedTable.tsx";
 import { Criteria } from "./model.ts";
 
 const numberEditConfig = (k: keyof Criteria): TableProps.EditConfig<Criteria> => ({
@@ -40,14 +40,17 @@ const CriteriaTable = () => {
 
     const remove = (item: Criteria) => setCriteria(prev => prev.filter(i => i.id !== item.id));
 
-    return <ContentLayout disableOverlap={false}>
-        <Table<Criteria>
+    return <ContentLayout disableOverlap={true}>
+        <EnhancedTable<Criteria>
             enableKeyboardNavigation
             items={criteria}
+            onSortingChange={comparator => setCriteria(prev => prev.toSorted(comparator))}
             columnDefinitions={[{
                 id: 'name',
                 header: 'Name',
-                cell: (item) => item.name,
+                isRowHeader: true,
+                cell: (item) => <strong>{item.name}</strong>,
+                sortingField: 'name',
                 editConfig: {
                     validation: (item) => item.name === undefined ? 'Not defined' : undefined,
                     editingCell: (item, { currentValue, setValue }) =>
