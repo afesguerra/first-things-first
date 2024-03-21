@@ -27,6 +27,8 @@ const numberEditConfig = (k: keyof Criteria): TableProps.EditConfig<Criteria> =>
 const CriteriaTable = () => {
     const [criteria, setCriteria] = useState<Criteria[]>([]);
 
+    const weight = (c: Criteria): number => (c.benefit + c.penalty) / (c.cost + c.risk)
+
     const add = () => setCriteria(prev => [...prev, {
         id: crypto.randomUUID(),
         name: 'New criteria',
@@ -43,10 +45,6 @@ const CriteriaTable = () => {
             enableKeyboardNavigation
             items={criteria}
             columnDefinitions={[{
-                id: 'rank',
-                header: 'Rank',
-                cell: () => 1,
-            }, {
                 id: 'name',
                 header: 'Name',
                 cell: (item) => item.name,
@@ -79,6 +77,11 @@ const CriteriaTable = () => {
                 header: 'Risk',
                 cell: (item) => item.risk,
                 editConfig: numberEditConfig('risk'),
+            }, {
+                id: 'weight',
+                header: 'Weight',
+                cell: (item) => <code>{weight(item)}</code>,
+                sortingComparator: (i1, i2) => weight(i1) - weight(i2),
             }, {
                 id: "actions",
                 header: "Actions",

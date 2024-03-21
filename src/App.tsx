@@ -3,7 +3,7 @@ import {I18nProvider} from '@cloudscape-design/components/i18n';
 import messages from '@cloudscape-design/components/i18n/messages/all.all';
 import {applyMode, Mode} from '@cloudscape-design/global-styles';
 import '@cloudscape-design/global-styles/index.css';
-import CriteriaTable from "./assets/CriteriaTable.tsx";
+import CriteriaTable from "./CriteriaTable.tsx";
 
 applyMode(Mode.Dark);
 
